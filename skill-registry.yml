@@ -1,0 +1,234 @@
+# Skill Registry
+# Each skill declares what tech it covers and how to detect that tech in a project.
+# The setup-project command reads this file, scans the target project, and wires
+# only the skills whose detection rules match.
+#
+# Schema per skill:
+#   name:        Skill folder name (must match skills/<category>/<name>/)
+#   category:    Grouping (frontend, backend, security, devops, testing, methodology)
+#   description: What the skill teaches the agent
+#   applies-to:  Semantic tech tags (human-readable)
+#   detects:     Rules to match against the project — ANY match = skill applies
+#     packages:  npm/pip/nuget/cargo package names to look for
+#     files:     Glob patterns for config files that indicate the tech
+#     content:   Grep patterns to search in project files
+#   agents:      Which agent roles benefit from this skill
+#     - task-executor, qa-reviewer, code-simplifier, task-fixer
+#     - audit-code-archaeologist, audit-security-auditor, audit-qa-tester
+#     - audit-devops-analyst, audit-docs-analyst, audit-requirements-analyst
+
+skills:
+  # ─── FRONTEND ───────────────────────────────────────────────
+
+  - name: tailwind-shadcn
+    category: frontend
+    description: "Tailwind CSS + shadcn/ui component workflow, design system, styling patterns"
+    applies-to: [tailwindcss, shadcn-ui, react, nextjs]
+    detects:
+      packages: [tailwindcss, "@shadcn/ui", tailwind-merge, clsx]
+      files: ["tailwind.config.*", "components.json", "postcss.config.*"]
+    agents: [task-executor, qa-reviewer, code-simplifier, audit-qa-tester]
+
+  - name: typescript-advanced
+    category: frontend
+    description: "Advanced TypeScript patterns — generics, conditional types, type guards, strict mode"
+    applies-to: [typescript]
+    detects:
+      packages: [typescript]
+      files: ["tsconfig.json", "tsconfig.*.json"]
+    agents: [task-executor, qa-reviewer, code-simplifier, audit-code-archaeologist]
+
+  # ─── BACKEND (.NET FRAMEWORK) ────────────────────────────────
+
+  - name: aspnet-mvc5-webapi2
+    category: backend
+    description: "ASP.NET MVC 5 + Web API 2 patterns — routing, controllers, filters, model binding, CORS, Web.config. NOT ASP.NET Core."
+    applies-to: [aspnet-mvc5, webapi2, dotnet-framework]
+    detects:
+      packages: [Microsoft.AspNet.Mvc, Microsoft.AspNet.WebApi, Microsoft.AspNet.WebApi.Core]
+      files: ["Global.asax", "Web.config", "App_Start/WebApiConfig.cs"]
+      content: ["ApiController", "System.Web.Http", "System.Web.Mvc"]
+    agents: [task-executor, qa-reviewer, code-simplifier, audit-code-archaeologist]
+
+  - name: entity-framework-6
+    category: backend
+    description: "Entity Framework 6 Code-First — DbContext, migrations, relationships, loading strategies, performance. NOT EF Core."
+    applies-to: [entity-framework-6, dotnet-framework]
+    detects:
+      packages: [EntityFramework, EntityFramework.SqlServer]
+      files: ["Migrations/Configuration.cs", "Data/*.cs"]
+      content: ["System.Data.Entity", "DbMigration", "DbModelBuilder"]
+    agents: [task-executor, qa-reviewer, code-simplifier, audit-code-archaeologist]
+
+  - name: sql-server-dapper
+    category: backend
+    description: "SQL Server + Dapper + ADO.NET — connection management, parameterized queries, optimization, indexes, transactions, stored procedures."
+    applies-to: [sql-server, dapper, ado-net]
+    detects:
+      packages: [Dapper, System.Data.SqlClient]
+      files: ["*.sql", "Web.config"]
+      content: ["SqlConnection", "SqlCommand", "connection.Query", "Data Source="]
+    agents: [task-executor, qa-reviewer, audit-code-archaeologist, audit-security-auditor]
+
+  - name: unity-di
+    category: backend
+    description: "Unity 5.x dependency injection container — lifetime managers, MVC 5 + Web API 2 integration, registration patterns."
+    applies-to: [unity-di, dotnet-framework]
+    detects:
+      packages: [Unity, Unity.Mvc, Unity.AspNet.WebApi]
+      files: ["App_Start/UnityConfig.cs", "App_Start/UnityWebApiActivator.cs"]
+      content: ["UnityContainer", "Unity.Lifetime", "HierarchicalLifetimeManager"]
+    agents: [task-executor, qa-reviewer, audit-code-archaeologist]
+
+  - name: quartz-scheduling
+    category: backend
+    description: "Quartz.NET 3.x job scheduling — scheduler setup, cron triggers, persistent job store, ASP.NET integration, CrystalQuartz dashboard."
+    applies-to: [quartz-net, dotnet-framework]
+    detects:
+      packages: [Quartz, CrystalQuartz.Simple, CrystalQuartz.Owin]
+      content: ["IJob", "IScheduler", "JobBuilder.Create", "CronSchedule"]
+    agents: [task-executor, qa-reviewer, audit-devops-analyst]
+
+  - name: hmac-auth
+    category: backend
+    description: "HMAC-SHA256 custom authentication for Web API 2 — request signing, nonce replay protection, timing-safe comparison, API key management."
+    applies-to: [hmac-auth, webapi2, dotnet-framework]
+    detects:
+      content: ["HMACSHA256", "HMACAuthentication", "ApiKeyAuthorization", "DelegatingHandler"]
+    agents: [task-executor, qa-reviewer, audit-security-auditor]
+
+  - name: dotnet-logging
+    category: backend
+    description: "log4net + ELMAH — logging configuration, appenders, Web API integration, error filtering, dashboard security."
+    applies-to: [log4net, elmah, dotnet-framework]
+    detects:
+      packages: [log4net, Elmah, Elmah.Mvc]
+      files: ["elmah.axd"]
+      content: ["LogManager.GetLogger", "log4net", "ErrorLogModule"]
+    agents: [task-executor, qa-reviewer, audit-devops-analyst]
+
+  # ─── SECURITY ───────────────────────────────────────────────
+
+  - name: security-hardening
+    category: security
+    description: "Input validation, auth, headers, secrets, OWASP top 10, dependency auditing"
+    applies-to: [security, web-apps]
+    detects:
+      # This skill applies to ANY web project — detection is broad
+      packages: [next, express, fastify, koa, django, flask, "asp.net"]
+      files: ["package.json", "requirements.txt", "*.csproj", "Cargo.toml"]
+    agents: [task-executor, qa-reviewer, audit-security-auditor]
+
+  # ─── DEVOPS ─────────────────────────────────────────────────
+
+  - name: ci-cd-pipelines
+    category: devops
+    description: "GitHub Actions, GitLab CI, testing strategies, deployment automation"
+    applies-to: [ci-cd, github-actions, gitlab-ci]
+    detects:
+      files: [".github/workflows/*.yml", ".gitlab-ci.yml", "Jenkinsfile", ".circleci/config.yml"]
+    agents: [task-executor, audit-devops-analyst]
+
+  # ─── METHODOLOGY (always loaded, no detection needed) ──────
+
+  - name: ferran-task
+    category: methodology
+    description: "Task protocol — creating, scoping, and completing task files"
+    applies-to: [all]
+    detects:
+      always: true
+    agents: [task-executor, qa-reviewer, task-fixer]
+
+  - name: ferran-plan
+    category: methodology
+    description: "Project planning — structured interview, vision, architecture, task backlog"
+    applies-to: [all]
+    detects:
+      always: true
+    agents: []
+
+  - name: ferran-e2e
+    category: methodology
+    description: "E2E testing methodology — investigation-first debugging, Playwright patterns"
+    applies-to: [all]
+    detects:
+      always: true
+    agents: [qa-reviewer, audit-qa-tester]
+
+# ─── PLACEHOLDER SKILLS (not yet built) ─────────────────────
+# These entries document skills we KNOW we need but haven't written yet.
+# The setup-project command will flag these as "detected but no skill available"
+# so you know what to build before starting work.
+
+placeholders:
+  - name: nextjs-patterns
+    category: frontend
+    description: "Next.js App Router, RSC, server actions, metadata, middleware"
+    applies-to: [nextjs]
+    detects:
+      packages: [next]
+      files: ["next.config.*", "app/layout.tsx", "app/layout.js"]
+    status: "NOT BUILT — agent uses base knowledge only"
+
+  - name: supabase-postgres
+    category: backend
+    description: "Supabase client, RLS policies, migrations, edge functions, realtime"
+    applies-to: [supabase, postgres]
+    detects:
+      packages: ["@supabase/supabase-js", "@supabase/ssr"]
+      files: ["supabase/config.toml", "supabase/migrations/**/*.sql"]
+    status: "NOT BUILT — agent uses base knowledge only"
+
+  - name: react-patterns
+    category: frontend
+    description: "React 18/19 patterns, hooks, composition, performance"
+    applies-to: [react]
+    detects:
+      packages: [react, react-dom]
+      files: []
+    status: "NOT BUILT — agent uses base knowledge only"
+
+  - name: vitest-testing
+    category: testing
+    description: "Vitest configuration, mocking, coverage, test patterns"
+    applies-to: [vitest]
+    detects:
+      packages: [vitest]
+      files: ["vitest.config.*", "vite.config.*"]
+    status: "NOT BUILT — agent uses base knowledge only"
+
+  - name: playwright-testing
+    category: testing
+    description: "Playwright test configuration, selectors, fixtures, CI setup"
+    applies-to: [playwright]
+    detects:
+      packages: ["@playwright/test"]
+      files: ["playwright.config.*"]
+    status: "NOT BUILT — agent uses base knowledge only"
+
+  - name: storybook
+    category: frontend
+    description: "Storybook 8+ configuration, story patterns, addons, visual testing"
+    applies-to: [storybook]
+    detects:
+      packages: [storybook, "@storybook/react"]
+      files: [".storybook/main.*"]
+    status: "NOT BUILT — agent uses base knowledge only"
+
+  - name: dotnet-core-aspnet
+    category: backend
+    description: "ASP.NET Core, modern .NET 6+/8+, Minimal APIs, middleware pipeline, IServiceCollection"
+    applies-to: [dotnet-core, aspnet-core]
+    detects:
+      files: ["*.csproj", "Program.cs", "appsettings.json"]
+      content: ["<Project Sdk=\"Microsoft.NET", "builder.Services", "app.MapControllers"]
+    status: "NOT BUILT — for modern .NET projects (legacy .NET Framework IS covered)"
+
+  - name: python-django
+    category: backend
+    description: "Django ORM, views, middleware, templates, REST framework"
+    applies-to: [python, django]
+    detects:
+      packages: [django, djangorestframework]
+      files: ["manage.py", "settings.py", "requirements.txt", "pyproject.toml"]
+    status: "NOT BUILT — needed for Python projects"

@@ -1,0 +1,62 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npm:*)",
+      "Bash(npx:*)",
+      "Bash(node:*)",
+      "Bash(git status:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push:*)",
+      "Bash(git pull:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(git merge:*)",
+      "Bash(git stash:*)",
+      "Bash(git log:*)",
+      "Bash(git diff:*)",
+      "Bash(git rm:*)",
+      "Bash(git remote:*)",
+      "Bash(git rebase:*)",
+      "Bash(git rev-parse:*)",
+      "Bash(git show:*)",
+      "Bash(git fetch:*)",
+      "Bash(git reset:*)",
+      "Bash(git clean:*)",
+      "Bash(git tag:*)",
+      "Bash(ls:*)",
+      "Bash(cat:*)",
+      "Bash(wc:*)",
+      "Bash(find:*)",
+      "Bash(mkdir:*)",
+      "Bash(cp:*)",
+      "Bash(mv:*)",
+      "Bash(head:*)",
+      "Bash(tail:*)",
+      "Bash(od:*)",
+      "Bash(file:*)",
+      "Bash(pwd:*)",
+      "Bash(echo:*)",
+      "Bash(curl:*)",
+      "Bash(gh:*)",
+      "Bash(docker:*)",
+      "Bash(supabase:*)",
+      "Bash(bash:*)",
+      "Bash(cd:*)",
+      "Read",
+      "Edit",
+      "Write",
+      "Glob",
+      "Grep",
+      "Agent"
+    ],
+    "deny": [
+      "Bash(git branch -D:*)",
+      "Bash(git branch -d:*)",
+      "Bash(git push origin --delete:*)"
+    ],
+    "additionalDirectories": [
+      "REPLACE_WITH_YOUR_ORGANIZACION_PATH"
+    ]
+  }
+}
