@@ -16,6 +16,7 @@
 #     - task-executor, qa-reviewer, code-simplifier, task-fixer
 #     - audit-code-archaeologist, audit-security-auditor, audit-qa-tester
 #     - audit-devops-analyst, audit-docs-analyst, audit-requirements-analyst
+#   source:      Where the skill was sourced from (for attribution)
 
 skills:
   # ─── FRONTEND ───────────────────────────────────────────────
@@ -28,6 +29,7 @@ skills:
       packages: [tailwindcss, "@shadcn/ui", tailwind-merge, clsx]
       files: ["tailwind.config.*", "components.json", "postcss.config.*"]
     agents: [task-executor, qa-reviewer, code-simplifier, audit-qa-tester]
+    source: custom
 
   - name: typescript-advanced
     category: frontend
@@ -37,6 +39,94 @@ skills:
       packages: [typescript]
       files: ["tsconfig.json", "tsconfig.*.json"]
     agents: [task-executor, qa-reviewer, code-simplifier, audit-code-archaeologist]
+    source: custom
+
+  - name: nextjs-patterns
+    category: frontend
+    description: "Next.js App Router best practices — file conventions, RSC boundaries, data patterns, async APIs, metadata, error handling, route handlers, image/font optimization, bundling. 19 reference files."
+    applies-to: [nextjs]
+    detects:
+      packages: [next]
+      files: ["next.config.*", "app/layout.tsx", "app/layout.js", "src/app/**/layout.tsx"]
+    agents: [task-executor, qa-reviewer, code-simplifier, audit-code-archaeologist]
+    source: vercel-labs/next-skills (81K stars)
+
+  - name: nextjs-cache
+    category: frontend
+    description: "Next.js 16 Cache Components — PPR, use cache directive, cacheLife, cacheTag, updateTag. Partial prerendering patterns."
+    applies-to: [nextjs]
+    detects:
+      packages: [next]
+      files: ["next.config.*"]
+      content: ["use cache", "cacheLife", "cacheTag"]
+    agents: [task-executor, qa-reviewer, code-simplifier]
+    source: vercel-labs/next-skills (81K stars)
+
+  - name: nextjs-upgrade
+    category: frontend
+    description: "Upgrade Next.js to latest version following official migration guides and codemods"
+    applies-to: [nextjs]
+    detects:
+      packages: [next]
+    agents: [task-executor]
+    source: vercel-labs/next-skills (81K stars)
+
+  - name: react-patterns
+    category: frontend
+    description: "React + Next.js performance optimization from Vercel Engineering — 58 rules across 8 categories covering async patterns, bundle optimization, server/client rendering, rerender prevention"
+    applies-to: [react, nextjs]
+    detects:
+      packages: [react, react-dom]
+    agents: [task-executor, qa-reviewer, code-simplifier, audit-qa-tester, audit-code-archaeologist]
+    source: vercel-labs/agent-skills (8.9K stars)
+
+  - name: react-composition
+    category: frontend
+    description: "React composition patterns that scale — compound components, render props, context providers, avoiding boolean prop proliferation. Includes React 19 API changes. 10 rule files."
+    applies-to: [react]
+    detects:
+      packages: [react, react-dom]
+    agents: [task-executor, qa-reviewer, code-simplifier]
+    source: vercel-labs/agent-skills (8.9K stars)
+
+  - name: shadcn-components
+    category: frontend
+    description: "Expert shadcn/ui integration — MCP-based discovery, installation, cn() utility, CSS variables, cva variants, wrapper components, blocks, accessibility, visual styles (Vega/Nova/Maia/Lyra/Mira)"
+    applies-to: [shadcn-ui, react]
+    detects:
+      packages: ["@shadcn/ui", "@radix-ui/react-slot"]
+      files: ["components.json"]
+    agents: [task-executor, qa-reviewer, code-simplifier]
+    source: google-labs-code/stitch-skills
+
+  - name: senior-frontend
+    category: frontend
+    description: "Full-stack frontend development — Next.js 14 scaffolding, component generation with --with-test/--with-story, bundle analysis, React patterns, accessibility, RTL testing with Vitest"
+    applies-to: [react, nextjs, typescript, tailwindcss]
+    detects:
+      packages: [next, react, typescript]
+      files: ["next.config.*", "tsconfig.json"]
+    agents: [task-executor, qa-reviewer, code-simplifier]
+    source: alirezarezvani/claude-skills (2.2K stars)
+
+  - name: frontend-design
+    category: frontend
+    description: "Production-grade frontend UI design — anti-AI-slop aesthetics, bold typography, CSS animations, distinctive layouts. For building memorable interfaces."
+    applies-to: [react, html, css]
+    detects:
+      packages: [react, next]
+      files: ["package.json"]
+    agents: [task-executor, audit-qa-tester]
+    source: anthropics/skills (81K stars)
+
+  - name: web-design-guidelines
+    category: frontend
+    description: "Review UI code for Web Interface Guidelines compliance — accessibility, design standards, UX best practices. Fetches live rules from Vercel."
+    applies-to: [web-apps, react, html]
+    detects:
+      packages: [react, next]
+    agents: [qa-reviewer, audit-qa-tester]
+    source: vercel-labs/agent-skills (8.9K stars)
 
   # ─── BACKEND (.NET FRAMEWORK) ────────────────────────────────
 
@@ -49,6 +139,7 @@ skills:
       files: ["Global.asax", "Web.config", "App_Start/WebApiConfig.cs"]
       content: ["ApiController", "System.Web.Http", "System.Web.Mvc"]
     agents: [task-executor, qa-reviewer, code-simplifier, audit-code-archaeologist]
+    source: custom
 
   - name: entity-framework-6
     category: backend
@@ -59,6 +150,7 @@ skills:
       files: ["Migrations/Configuration.cs", "Data/*.cs"]
       content: ["System.Data.Entity", "DbMigration", "DbModelBuilder"]
     agents: [task-executor, qa-reviewer, code-simplifier, audit-code-archaeologist]
+    source: custom
 
   - name: sql-server-dapper
     category: backend
@@ -69,6 +161,7 @@ skills:
       files: ["*.sql", "Web.config"]
       content: ["SqlConnection", "SqlCommand", "connection.Query", "Data Source="]
     agents: [task-executor, qa-reviewer, audit-code-archaeologist, audit-security-auditor]
+    source: custom
 
   - name: unity-di
     category: backend
@@ -79,6 +172,7 @@ skills:
       files: ["App_Start/UnityConfig.cs", "App_Start/UnityWebApiActivator.cs"]
       content: ["UnityContainer", "Unity.Lifetime", "HierarchicalLifetimeManager"]
     agents: [task-executor, qa-reviewer, audit-code-archaeologist]
+    source: custom
 
   - name: quartz-scheduling
     category: backend
@@ -88,6 +182,7 @@ skills:
       packages: [Quartz, CrystalQuartz.Simple, CrystalQuartz.Owin]
       content: ["IJob", "IScheduler", "JobBuilder.Create", "CronSchedule"]
     agents: [task-executor, qa-reviewer, audit-devops-analyst]
+    source: custom
 
   - name: hmac-auth
     category: backend
@@ -96,6 +191,7 @@ skills:
     detects:
       content: ["HMACSHA256", "HMACAuthentication", "ApiKeyAuthorization", "DelegatingHandler"]
     agents: [task-executor, qa-reviewer, audit-security-auditor]
+    source: custom
 
   - name: dotnet-logging
     category: backend
@@ -106,6 +202,118 @@ skills:
       files: ["elmah.axd"]
       content: ["LogManager.GetLogger", "log4net", "ErrorLogModule"]
     agents: [task-executor, qa-reviewer, audit-devops-analyst]
+    source: custom
+
+  # ─── BACKEND (MODERN) ─────────────────────────────────────────
+
+  - name: supabase-postgres
+    category: backend
+    description: "Postgres performance optimization from Supabase — 34 reference files covering indexes, RLS, connection pooling, locking, pagination, JSONB, full-text search, vacuum, monitoring"
+    applies-to: [supabase, postgres]
+    detects:
+      packages: ["@supabase/supabase-js", "@supabase/ssr"]
+      files: ["supabase/config.toml", "supabase/migrations/**/*.sql"]
+    agents: [task-executor, qa-reviewer, code-simplifier, audit-security-auditor, audit-code-archaeologist]
+    source: supabase/agent-skills (official)
+
+  - name: database-schema-designer
+    category: backend
+    description: "Requirements to migrations — Prisma/Drizzle/Alembic schema generation, RLS policies, seed data, ERD diagrams. Multi-tenant patterns."
+    applies-to: [postgres, supabase, prisma, drizzle]
+    detects:
+      packages: ["@supabase/supabase-js", prisma, drizzle-orm]
+      files: ["supabase/migrations/**/*.sql", "prisma/schema.prisma"]
+    agents: [task-executor, qa-reviewer, audit-code-archaeologist]
+    source: alirezarezvani/claude-skills (2.2K stars)
+
+  - name: database-designer
+    category: backend
+    description: "Database design theory and practice — normalization (1NF-BCNF), denormalization, index strategies (B-Tree/Hash/Composite/Covering/Partial), partitioning, connection pooling, caching patterns"
+    applies-to: [postgres, sql-server, mysql, databases]
+    detects:
+      files: ["supabase/migrations/**/*.sql", "prisma/schema.prisma", "*.sql"]
+      content: ["CREATE TABLE", "CREATE INDEX", "ALTER TABLE"]
+    agents: [task-executor, qa-reviewer, audit-code-archaeologist]
+    source: alirezarezvani/claude-skills (2.2K stars)
+
+  # ─── TESTING ───────────────────────────────────────────────────
+
+  - name: vitest-api-testing
+    category: testing
+    description: "API test suite generation — scans routes (Next.js App Router, Express, FastAPI, Django), generates auth/validation/pagination/upload tests. Uses Vitest + Supertest with full copy-ready examples."
+    applies-to: [vitest, testing, nextjs]
+    detects:
+      packages: [vitest]
+      files: ["vitest.config.*", "vite.config.*"]
+    agents: [task-executor, qa-reviewer, task-fixer, audit-qa-tester]
+    source: alirezarezvani/claude-skills (2.2K stars)
+
+  - name: playwright-testing
+    category: testing
+    description: "Playwright web testing toolkit — server lifecycle management, element discovery, screenshot capture, console logging, reconnaissance-then-action patterns"
+    applies-to: [playwright, testing]
+    detects:
+      packages: ["@playwright/test"]
+      files: ["playwright.config.*"]
+    agents: [task-executor, qa-reviewer, task-fixer, audit-qa-tester]
+    source: anthropics/skills (81K stars)
+
+  - name: tdd-guide
+    category: testing
+    description: "Test-Driven Development protocol — iron-law red-green-refactor, anti-rationalization enforcement, testing anti-patterns reference. Addresses 10+ common TDD excuses with specific rebuttals."
+    applies-to: [testing, vitest, jest, playwright]
+    detects:
+      packages: [vitest, jest, "@playwright/test"]
+      files: ["vitest.config.*", "jest.config.*", "playwright.config.*"]
+    agents: [task-executor, qa-reviewer, task-fixer]
+    source: obra/superpowers
+
+  # ─── METHODOLOGY ───────────────────────────────────────────────
+
+  - name: systematic-debugging
+    category: methodology
+    description: "Four-phase debugging protocol — root cause investigation, pattern analysis, hypothesis testing, implementation. Iron law: no fixes without root cause. 7 reference files."
+    applies-to: [all]
+    detects:
+      always: true
+    agents: [task-executor, task-fixer, qa-reviewer]
+    source: obra/superpowers
+
+  - name: subagent-development
+    category: methodology
+    description: "Subagent-driven development workflow — fresh subagents per task, two-stage review (spec compliance + code quality), implementer/reviewer prompt templates"
+    applies-to: [all]
+    detects:
+      always: true
+    agents: [task-executor]
+    source: obra/superpowers
+
+  - name: ferran-task
+    category: methodology
+    description: "Task protocol — creating, scoping, and completing task files"
+    applies-to: [all]
+    detects:
+      always: true
+    agents: [task-executor, qa-reviewer, task-fixer]
+    source: custom
+
+  - name: ferran-plan
+    category: methodology
+    description: "Project planning — structured interview, vision, architecture, task backlog"
+    applies-to: [all]
+    detects:
+      always: true
+    agents: []
+    source: custom
+
+  - name: ferran-e2e
+    category: methodology
+    description: "E2E testing methodology — investigation-first debugging, Playwright patterns"
+    applies-to: [all]
+    detects:
+      always: true
+    agents: [qa-reviewer, audit-qa-tester]
+    source: custom
 
   # ─── SECURITY ───────────────────────────────────────────────
 
@@ -118,6 +326,16 @@ skills:
       packages: [next, express, fastify, koa, django, flask, "asp.net"]
       files: ["package.json", "requirements.txt", "*.csproj", "Cargo.toml"]
     agents: [task-executor, qa-reviewer, audit-security-auditor]
+    source: custom
+
+  - name: differential-review
+    category: security
+    description: "Security-focused differential code review — blast radius analysis, git history context, test coverage checks, security regression detection. Generates markdown reports."
+    applies-to: [security, web-apps]
+    detects:
+      files: ["package.json", "requirements.txt", "*.csproj", "Cargo.toml", ".git"]
+    agents: [qa-reviewer, audit-security-auditor, audit-code-archaeologist]
+    source: trailofbits/skills
 
   # ─── DEVOPS ─────────────────────────────────────────────────
 
@@ -128,32 +346,7 @@ skills:
     detects:
       files: [".github/workflows/*.yml", ".gitlab-ci.yml", "Jenkinsfile", ".circleci/config.yml"]
     agents: [task-executor, audit-devops-analyst]
-
-  # ─── METHODOLOGY (always loaded, no detection needed) ──────
-
-  - name: ferran-task
-    category: methodology
-    description: "Task protocol — creating, scoping, and completing task files"
-    applies-to: [all]
-    detects:
-      always: true
-    agents: [task-executor, qa-reviewer, task-fixer]
-
-  - name: ferran-plan
-    category: methodology
-    description: "Project planning — structured interview, vision, architecture, task backlog"
-    applies-to: [all]
-    detects:
-      always: true
-    agents: []
-
-  - name: ferran-e2e
-    category: methodology
-    description: "E2E testing methodology — investigation-first debugging, Playwright patterns"
-    applies-to: [all]
-    detects:
-      always: true
-    agents: [qa-reviewer, audit-qa-tester]
+    source: custom
 
 # ─── PLACEHOLDER SKILLS (not yet built) ─────────────────────
 # These entries document skills we KNOW we need but haven't written yet.
@@ -161,51 +354,6 @@ skills:
 # so you know what to build before starting work.
 
 placeholders:
-  - name: nextjs-patterns
-    category: frontend
-    description: "Next.js App Router, RSC, server actions, metadata, middleware"
-    applies-to: [nextjs]
-    detects:
-      packages: [next]
-      files: ["next.config.*", "app/layout.tsx", "app/layout.js"]
-    status: "NOT BUILT — agent uses base knowledge only"
-
-  - name: supabase-postgres
-    category: backend
-    description: "Supabase client, RLS policies, migrations, edge functions, realtime"
-    applies-to: [supabase, postgres]
-    detects:
-      packages: ["@supabase/supabase-js", "@supabase/ssr"]
-      files: ["supabase/config.toml", "supabase/migrations/**/*.sql"]
-    status: "NOT BUILT — agent uses base knowledge only"
-
-  - name: react-patterns
-    category: frontend
-    description: "React 18/19 patterns, hooks, composition, performance"
-    applies-to: [react]
-    detects:
-      packages: [react, react-dom]
-      files: []
-    status: "NOT BUILT — agent uses base knowledge only"
-
-  - name: vitest-testing
-    category: testing
-    description: "Vitest configuration, mocking, coverage, test patterns"
-    applies-to: [vitest]
-    detects:
-      packages: [vitest]
-      files: ["vitest.config.*", "vite.config.*"]
-    status: "NOT BUILT — agent uses base knowledge only"
-
-  - name: playwright-testing
-    category: testing
-    description: "Playwright test configuration, selectors, fixtures, CI setup"
-    applies-to: [playwright]
-    detects:
-      packages: ["@playwright/test"]
-      files: ["playwright.config.*"]
-    status: "NOT BUILT — agent uses base knowledge only"
-
   - name: storybook
     category: frontend
     description: "Storybook 8+ configuration, story patterns, addons, visual testing"
@@ -213,7 +361,7 @@ placeholders:
     detects:
       packages: [storybook, "@storybook/react"]
       files: [".storybook/main.*"]
-    status: "NOT BUILT — agent uses base knowledge only"
+    status: "NOT BUILT — senior-frontend skill covers --with-story patterns"
 
   - name: dotnet-core-aspnet
     category: backend
@@ -232,3 +380,20 @@ placeholders:
       packages: [django, djangorestframework]
       files: ["manage.py", "settings.py", "requirements.txt", "pyproject.toml"]
     status: "NOT BUILT — needed for Python projects"
+
+  - name: next-intl
+    category: frontend
+    description: "next-intl i18n patterns — message files, useTranslations, routing, middleware, formatMessage"
+    applies-to: [nextjs, i18n]
+    detects:
+      packages: [next-intl]
+      files: ["messages/*.json", "i18n.ts", "i18n.js"]
+    status: "NOT BUILT — needed for internationalized Next.js projects"
+
+  - name: zod-validation
+    category: frontend
+    description: "Zod schema validation — runtime type checking, form validation, API input parsing, custom error maps"
+    applies-to: [zod, typescript]
+    detects:
+      packages: [zod]
+    status: "NOT BUILT — needed for projects using Zod schemas"
